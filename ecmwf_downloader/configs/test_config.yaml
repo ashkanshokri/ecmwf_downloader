@@ -1,0 +1,16 @@
+date: -1
+param:
+- tp
+save_dir: ./downloads
+source: ecmwf
+step:
+- 0
+- 24
+- 48
+- 72
+stream: enfo
+temp_filename: ./temp.grib
+time:
+- 0
+type:
+- cf

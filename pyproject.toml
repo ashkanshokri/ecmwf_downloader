@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ecmwf-downloader"
+version = "0.1.0"
+description = "A package to faciliate downloading ecmwf retrospective forecasts."
+authors = ["Ashkan Shokri <ash.shokri@csiro.au>"]
+readme = "README.md"
+packages = [{include = "ecmwf_downloader"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ecmwf-data = "^0.0.1"
+ecmwf-api-client = "^1.6.3"
+magpye = "^0.1.4"
+ecmwf-opendata = "^0.3.8"
+pyyaml = "^6.0.2"
+
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
