@@ -1,4 +1,3 @@
-import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
@@ -13,17 +12,10 @@ DEFAULT_DICT = {
     "stream": "enfo",
     'source': "ecmwf",
     'temp_filename': './temp.grib',
-    'save_dir': './downloads'
+    'save_dir': './downloads',
+    'look_back': 30,
+    'date_format': '%Y%m%d'
 }
-
-
-def get_current_timestamp() -> str:
-    """
-    Returns the current timestamp formatted as 'YYMMDDHHMMSS'.
-    
-    :return: A string representing the current timestamp.
-    """
-    return datetime.datetime.now().strftime('%y%m%d%H%M%S')
 
 
 def load_config(path: Union[str, Path]) -> 'Config':
@@ -54,6 +46,13 @@ class Config:
         default_config: Dict[str, Any] = DEFAULT_DICT
         default_config.update(kwargs)
         self.update(default_config)
+
+    @property
+    def date_log_file(self) -> str:
+        """
+        Returns the file path for logging the dates which already downloaded.
+        """
+        return str(Path(self.__dict__['save_dir']) / 'downloaded_dates.json')
 
     @property
     def request(self):

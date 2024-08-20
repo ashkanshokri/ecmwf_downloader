@@ -1,16 +1,16 @@
-date: -1
+date: 0
 param:
-- tp
+  - tp
 save_dir: ./downloads
-source: ecmwf
+source: aws
 step:
-- 0
-- 24
-- 48
-- 72
+  - 0
+  - 24
+  - 48
+  - 72
 stream: enfo
 temp_filename: ./temp.grib
 time:
-- 0
+  - 0
 type:
-- cf
+  - cf
