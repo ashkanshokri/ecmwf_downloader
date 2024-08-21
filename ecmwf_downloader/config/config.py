@@ -14,7 +14,7 @@ DEFAULT_DICT = {
     'source': "ecmwf",
     'temp_filename': './temp.grib',
     'save_dir': None,
-    'look_back': 30,
+    'look_back': 2,
     'date_format': '%Y%m%d',
     'name': 'data'
 }

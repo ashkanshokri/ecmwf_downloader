@@ -1,11 +1,11 @@
 date: -1
 date_format: '%Y%m%d'
-look_back: 30
+look_back: 2
 name: tp
 param:
 - tp
 save_dir: null
-source: aws
+source: ecmwf
 step:
 - 0
 - 3
