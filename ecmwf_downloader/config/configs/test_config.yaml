@@ -1,7 +1,6 @@
 date: 0
 param:
   - tp
-save_dir: ./downloads
 source: aws
 step:
   - 0
