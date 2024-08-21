@@ -48,13 +48,13 @@ def postprocess(config: Dict[str, str]) -> None:
     """
     try:
         temp_filename = config['temp_filename']
-        save_dir = Path(config['save_dir'])
+        save_dir = Path(config['save_dir']) / config['name']
         save_dir.mkdir(exist_ok=True, parents=True)
 
         data = ecdata.read(temp_filename)  # pylint: disable=E1101
         date = h.get_grib_date(data).strftime('%Y%m%d')
 
-        shutil.copy(temp_filename, save_dir / config['name'] / f'{date}.grib')
+        shutil.copy(temp_filename, save_dir / f'{date}.grib')
         os.remove(temp_filename)
         logger.info(
             f"Successfully processed and saved data for {date} to {save_dir}")
