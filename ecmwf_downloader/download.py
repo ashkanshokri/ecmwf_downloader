@@ -94,6 +94,9 @@ def get_data(config: Dict[str, str]) -> None:
     """
     initial_date = config['date']
 
+    if not config.get('save_dir'):
+        raise ValueError("save_dir is not defined")
+
     for offset in range(config['look_back'] * -1, 1):
         date = h.adjust_date(initial_date, offset)
         config['date'] = date

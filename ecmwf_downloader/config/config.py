@@ -15,7 +15,8 @@ DEFAULT_DICT = {
     'temp_filename': './temp.grib',
     'save_dir': None,
     'look_back': 30,
-    'date_format': '%Y%m%d'
+    'date_format': '%Y%m%d',
+    'name': 'data'
 }
 
 
@@ -49,7 +50,7 @@ class Config:
         self.update(default_config)
 
         # get save_dir
-        self.set_save_dir()
+        #self.set_save_dir()
 
     def set_save_dir(self):
         """
@@ -74,7 +75,9 @@ class Config:
         """
         Returns the file path for logging the dates which are already downloaded.
         """
-        return str(Path(self.__dict__['save_dir']) / 'downloaded_dates.json')
+        return str(
+            Path(self.__dict__['save_dir']) / self['name'] /
+            'downloaded_dates.json')
 
     @property
     def request(self) -> Dict[str, Any]:
