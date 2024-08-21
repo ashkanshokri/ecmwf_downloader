@@ -2,17 +2,18 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
 import yaml
+import os
 
 DEFAULT_DICT = {
-    'time': [0],  #0,6,12,18
-    'type': ["cf"],  #"pf", 
+    'time': [0],  # 0,6,12,18
+    'type': ["cf"],  # "pf",
     'step': [0, 24, 48, 72],
     'param': ["tp"],
-    'date': -1,  #'20220125',
+    'date': -1,  # '20220125',
     "stream": "enfo",
     'source': "ecmwf",
     'temp_filename': './temp.grib',
-    'save_dir': './downloads',
+    'save_dir': None,
     'look_back': 30,
     'date_format': '%Y%m%d'
 }
@@ -47,15 +48,39 @@ class Config:
         default_config.update(kwargs)
         self.update(default_config)
 
+        # get save_dir
+        self.set_save_dir()
+
+    def set_save_dir(self):
+        """
+        Determines and sets the 'save_dir' attribute from the environment variable 
+        or the default provided in the config. Validates the path and ensures it exists.
+        """
+        save_dir = self.get('save_dir', None)
+
+        if not save_dir:
+            save_dir = os.getenv('SAVE_DIR', None)
+            if save_dir is None:
+                raise ValueError(
+                    "The 'save_dir' is not set in the config and 'SAVE_DIR' environment variable is not defined."
+                )
+
+        save_dir = Path(save_dir).expanduser().resolve()
+        save_dir.mkdir(parents=True, exist_ok=True)
+        self.__dict__['save_dir'] = str(save_dir)
+
     @property
     def date_log_file(self) -> str:
         """
-        Returns the file path for logging the dates which already downloaded.
+        Returns the file path for logging the dates which are already downloaded.
         """
         return str(Path(self.__dict__['save_dir']) / 'downloaded_dates.json')
 
     @property
-    def request(self):
+    def request(self) -> Dict[str, Any]:
+        """
+        Returns a dictionary of configuration parameters relevant for requests.
+        """
         return {
             k: v
             for k, v in self.__dict__.items() if k in [

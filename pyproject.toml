@@ -8,11 +8,9 @@ packages = [{include = "ecmwf_downloader"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-ecmwf-data = "^0.0.1"
-ecmwf-api-client = "^1.6.3"
-magpye = "^0.1.4"
-ecmwf-opendata = "^0.3.8"
 pyyaml = "^6.0.2"
+ecmwf-opendata = "^0.3.8"
+ecmwf-data = "^0.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
