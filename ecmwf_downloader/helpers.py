@@ -1,6 +1,41 @@
 import warnings
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import List, Union
+
+import ecmwf_downloader as ed
+
+
+def resolve_config_path(config_name: Union[str, Path]) -> str:
+    """
+    Resolves the absolute path to a configuration file. The function first checks if the 
+    provided config_name exists as an absolute or relative path. If not, it searches 
+    within the default configuration directory of the package.
+
+    Args:
+        config_name (Union[str, Path]): The name or relative path of the configuration file.
+
+    Returns:
+        str: The absolute path to the configuration file.
+
+    Raises:
+        FileNotFoundError: If the configuration file is not found in either location.
+    """
+    if isinstance(config_name, str):
+        config_name = Path(config_name)
+
+    if config_name.exists():
+        return str(config_name)
+
+    default_configs = Path(ed.__file__).parent / 'config' / 'configs'
+
+    if (default_configs / config_name).exists():
+        return str(default_configs / config_name)
+
+    if (default_configs / f"{config_name}.yaml").exists():
+        return str(default_configs / f"{config_name}.yaml")
+
+    raise FileNotFoundError(f"Configuration file '{config_name}' not found.")
 
 
 def get_grib_date(data) -> datetime:
