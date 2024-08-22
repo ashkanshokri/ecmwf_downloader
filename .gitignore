@@ -164,3 +164,4 @@ cython_debug/
 cornjob.yaml
 cornjobs2.yaml
 **.grib
+**.idx
