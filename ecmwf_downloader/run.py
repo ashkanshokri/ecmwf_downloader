@@ -50,4 +50,4 @@ if __name__ == "__main__":
     main(args.config_path, save_dir=args.save_dir)
 
 # example: python -m ecmwf_downloader.run /Users/sho108/projects/ecmwf_downloader/ecmwf_downloader/configs/test_config.yaml --save_dir /path/to/save/dir
-# example: python -m ecmwf_downloader.run test_config.yaml --save_dir /path/to/save/dir
+# example: python -m ecmwf_downloader.run test_config.yaml --save_dir ./downloads
