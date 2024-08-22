@@ -6,9 +6,13 @@ area:
 date: -1
 date_format: '%Y%m%d'
 look_back: 2
-name: tp
+name: mean_std
 param:
-- tp
+- ssr
+- 2t
+- msl
+- cape
+- tcwv
 save_dir: null
 save_grib: false
 save_netcdf: true
@@ -83,5 +87,5 @@ temp_filename: ./temp.grib
 time:
 - 0
 type:
-- pf
-- cf
+- em
+- es

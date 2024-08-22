@@ -11,10 +11,14 @@ python = "^3.10"
 pyyaml = "^6.0.2"
 ecmwf-opendata = "^0.3.8"
 ecmwf-data = "^0.0.1"
+cfgrib = "^0.9.14.0"
+xarray = "^2024.7.0"
+netcdf4 = "^1.7.1.post2"
 
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
+matplotlib = "^3.9.2"
 
 [build-system]
 requires = ["poetry-core"]

@@ -4,21 +4,6 @@ from typing import Any, Dict, Optional, Union
 import yaml
 import os
 
-DEFAULT_DICT = {
-    'time': [0],  # 0,6,12,18
-    'type': ["cf"],  # "pf",
-    'step': [0, 24, 48, 72],
-    'param': ["tp"],
-    'date': -1,  # '20220125',
-    "stream": "enfo",
-    'source': "ecmwf",
-    'temp_filename': './temp.grib',
-    'save_dir': None,
-    'look_back': 2,
-    'date_format': '%Y%m%d',
-    'name': 'data'
-}
-
 
 def load_config(path: Union[str, Path]) -> 'Config':
     """
@@ -45,6 +30,23 @@ class Config:
         
         :param kwargs: Additional configuration parameters.
         """
+        DEFAULT_DICT = {
+            'time': [0],  # 0,6,12,18
+            'type': ["cf"],  # "pf",
+            'step': [0, 24, 48, 72],
+            'param': ["tp"],
+            'date': -1,  # '20220125',
+            "stream": "enfo",
+            'source': "ecmwf",
+            'temp_filename': './temp.grib',
+            'save_dir': None,
+            'look_back': 2,
+            'date_format': '%Y%m%d',
+            'name': 'data',
+            'area': [-5.0, 110.0, -45.0, 155.0],
+            'save_grib': False,
+            'save_netcdf': True,
+        }
         default_config: Dict[str, Any] = DEFAULT_DICT
         default_config.update(kwargs)
         self.update(default_config)

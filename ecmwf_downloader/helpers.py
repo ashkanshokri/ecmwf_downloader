@@ -6,6 +6,27 @@ from typing import List, Union
 import ecmwf_downloader as ed
 
 
+def crop_data(data, area):
+    """
+    Crops the dataset to the specified geographical area.
+
+    Args:
+        data (xr.Dataset): The input dataset to be cropped.
+        area (tuple): A tuple of four floats representing the bounding box for cropping 
+                      (north, west, south, east).
+
+    Returns:
+        xr.Dataset: The cropped dataset.
+    """
+    north, west, south, east = area
+
+    # Select latitude and longitude range
+    cropped_data = data.sel(latitude=slice(north, south),
+                            longitude=slice(west, east))
+
+    return cropped_data
+
+
 def resolve_config_path(config_name: Union[str, Path]) -> str:
     """
     Resolves the absolute path to a configuration file. The function first checks if the 
