@@ -10,6 +10,7 @@ from ecmwf_downloader import helpers as h
 from ecmwf_downloader.postprocess import postprocess
 from datetime import datetime, timedelta
 import json
+from uuid import uuid4
 
 # Initialize logger
 logger = setup_logger(__name__)
@@ -72,17 +73,25 @@ def get_raw_data(config: Dict[str, str]) -> None:
     Args:
         config (Dict[str, str]): Configuration dictionary containing necessary parameters.
     """
-    try:
 
-        temp_filename = Path(config['temp_filename'])
-        temp_filename.parent.mkdir(exist_ok=True)
-        client = Client(source=config['source'])
-        client.retrieve(config.request, temp_filename)
-        logger.info(
-            f"Successfully retrieved data for {config['date']} and saved to {temp_filename}"
-        )
-    except Exception as e:
-        logger.error(f"Failed to retrieve data for {config['date']}: {e}")
+    config['temp_filename'] = str(uuid4())
+    temp_filename = Path(config['temp_filename'])
+    temp_filename.parent.mkdir(exist_ok=True)
+    if not isinstance(config['source'], list):
+        config['source'] = [config['source']]
+
+    for source in config['source']:
+        try:
+            client = Client(source=source)
+            client.retrieve(config.request, temp_filename)
+            logger.info(
+                f"Successfully retrieved data for {config['date']} and saved to {temp_filename}"
+            )
+            break
+
+        except Exception:
+            logger.error(
+                f"Failed to retrieve data for {config['date']} from {source}.")
 
 
 def get_data(config: Dict[str, str]) -> None:

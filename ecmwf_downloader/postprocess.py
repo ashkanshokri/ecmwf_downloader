@@ -88,6 +88,9 @@ def convert_and_crop_grib_to_netcdf(
             comp = dict(zlib=True,
                         complevel=5)  # Adjust complevel (0-9) for compression
             encoding = {var: comp for var in ds.data_vars}
+
+            if not isinstance(date, str):
+                date = date[0]
             ds.to_netcdf(save_dir / f'{data_type}_{date}.nc',
                          encoding=encoding,
                          engine='netcdf4')

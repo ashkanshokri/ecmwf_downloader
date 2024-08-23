@@ -31,13 +31,13 @@ class Config:
         :param kwargs: Additional configuration parameters.
         """
         DEFAULT_DICT = {
-            'time': [0],  # 0,6,12,18
+            'time': [0, 12],  # 0,6,12,18
             'type': ["cf"],  # "pf",
             'step': [0, 24, 48, 72],
             'param': ["tp"],
             'date': -1,  # '20220125',
             "stream": "enfo",
-            'source': "ecmwf",
+            'source': ['ecmwf', 'gcp', 'aws', 'azure'],
             'temp_filename': './temp.grib',
             'save_dir': None,
             'look_back': 2,

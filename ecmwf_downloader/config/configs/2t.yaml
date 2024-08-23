@@ -5,18 +5,18 @@ area:
 - 155.0
 date: -1
 date_format: '%Y%m%d'
-look_back: 365
-name: mean_std
+look_back: 185
+name: 2t
 param:
-- ssr
 - 2t
-- msl
-- cape
-- tcwv
 save_dir: null
 save_grib: false
 save_netcdf: true
-source: aws
+source:
+- ecmwf
+- gcp
+- aws
+- azure
 step:
 - 0
 - 3
