@@ -37,7 +37,7 @@ class Config:
             'param': ["tp"],
             'date': -1,  # '20220125',
             "stream": "enfo",
-            'source': ['ecmwf', 'gcp', 'aws', 'azure'],
+            'source': ['ecmwf', 'aws', 'azure', 'gcp'],
             'temp_filename': './temp.grib',
             'save_dir': None,
             'look_back': 2,

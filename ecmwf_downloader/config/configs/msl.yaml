@@ -14,9 +14,9 @@ save_grib: false
 save_netcdf: true
 source:
 - ecmwf
-- gcp
 - aws
 - azure
+- gcp
 step:
 - 0
 - 3
