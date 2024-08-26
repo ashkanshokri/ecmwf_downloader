@@ -120,7 +120,7 @@ def save_grib(config: Dict[str, Union[str, Path]]) -> str:
     date = h.get_grib_date(data).strftime('%Y%m%d')
 
     shutil.copy(temp_filename, save_dir / f'{date}.grib')
-    os.remove(temp_filename)
+
     logger.info(
         f"Successfully processed and saved data for {date} to {save_dir}")
     return date
@@ -158,6 +158,7 @@ def postprocess(config: Dict[str, Union[str, Path, bool]]) -> None:
 
         date = date or get_date(config)
         update_downloaded_dates(date, config.date_log_file)
+        os.remove(config['temp_filename'])
 
     except Exception as e:
         logger.exception(

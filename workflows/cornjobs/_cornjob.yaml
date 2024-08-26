@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ecmwfdl2
+spec:
+  schedule: "03 11 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ecmwfdl2
+              image: python:3.10
+              resources:
+                limits:
+                  memory: "64Gi"
+                  cpu: 4
+                requests:
+                  memory: "64Gi"
+                  cpu: 4
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  cd /tmp
+                  python -m venv /tmp/.venv  
+                  . /tmp/.venv/bin/activate  
+                  pip install git+https://github.com/ashkanshokri/ecmwf_downloader.git  
+                  python -m ecmwf_downloader.run 2t.yaml --save_dir="/data/{lw-hydrofct}/work/common/Projects/ECMWF/cron_job_downloads" 
+                  python -m ecmwf_downloader.run tp.yaml --save_dir="/data/{lw-hydrofct}/work/common/Projects/ECMWF/cron_job_downloads" 
+                  python -m ecmwf_downloader.run tcwv.yaml --save_dir="/data/{lw-hydrofct}/work/common/Projects/ECMWF/cron_job_downloads" 
+                  python -m ecmwf_downloader.run ssr.yaml --save_dir="/data/{lw-hydrofct}/work/common/Projects/ECMWF/cron_job_downloads" 
+                  python -m ecmwf_downloader.run msl.yaml --save_dir="/data/{lw-hydrofct}/work/common/Projects/ECMWF/cron_job_downloads" 
+                  python -m ecmwf_downloader.run cape.yaml --save_dir="/data/{lw-hydrofct}/work/common/Projects/ECMWF/cron_job_downloads" 
+                  wait
+
+              volumeMounts:
+                - name: nfs-my-bowen-storage
+                  mountPath: /data/{lw-hydrofct}/work
+              securityContext:
+                runAsUser: xxxxx
+                runAsGroup: xxxxx
+              env:
+                - name: USER
+                  value: "default_user"
+
+          restartPolicy: Never
+          volumes:
+            - name: nfs-my-bowen-storage
+              nfs:
+                server: "fs1-cbr.nexus.csiro.au"
+                path: "/data/{lw-hydrofct}/work"

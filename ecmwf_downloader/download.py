@@ -74,7 +74,7 @@ def get_raw_data(config: Dict[str, str]) -> None:
         config (Dict[str, str]): Configuration dictionary containing necessary parameters.
     """
 
-    config['temp_filename'] = str(uuid4())
+    config['temp_filename'] = config['name'] + str(uuid4())[:12]
     temp_filename = Path(config['temp_filename'])
     temp_filename.parent.mkdir(exist_ok=True)
     if not isinstance(config['source'], list):
