@@ -83,6 +83,7 @@ def convert_and_crop_grib_to_netcdf(
 
         date = pd.to_datetime(ds.time.values).strftime(config['date_format'])
 
+        out_filename = f'{data_type}_{date}.nc'
         try:
             # Save to NetCDF with compression using the netcdf4 engine
             comp = dict(zlib=True,
@@ -91,15 +92,15 @@ def convert_and_crop_grib_to_netcdf(
 
             if not isinstance(date, str):
                 date = date[0]
-            ds.to_netcdf(save_dir / f'{data_type}_{date}.nc',
+            ds.to_netcdf(save_dir / out_filename,
                          encoding=encoding,
                          engine='netcdf4')
-            logger.info("Saving NetCDF using netcdf4.")
+            logger.info(f"Saving NetCDF using netcdf4: {out_filename}")
         except Exception as e:
             logger.exception(
                 f"Failed to save NetCDF for {data_type} on {date}: {e}")
-            ds.to_netcdf(save_dir / f'{data_type}_{date}.nc', engine='scipy')
-            logger.info("Saving NetCDF using scipy.")
+            ds.to_netcdf(save_dir / out_filename, engine='scipy')
+            logger.info(f"Saving NetCDF using scipy: {out_filename}")
 
     return date
 

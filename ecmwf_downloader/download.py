@@ -85,13 +85,14 @@ def get_raw_data(config: Dict[str, str]) -> None:
             client = Client(source=source)
             client.retrieve(config.request, temp_filename)
             logger.info(
-                f"Successfully retrieved data for {config['date']} and saved to {temp_filename}"
+                f"Successfully retrieved data for {config['date']} and {config['param']}. saved to {temp_filename}"
             )
             break
 
         except Exception:
             logger.error(
-                f"Failed to retrieve data for {config['date']} from {source}.")
+                f"Failed to retrieve data for {config['date']} and {config['param']} from {source}."
+            )
 
 
 def get_data(config: Dict[str, str]) -> None:
