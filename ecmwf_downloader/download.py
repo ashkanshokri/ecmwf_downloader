@@ -11,7 +11,7 @@ from ecmwf_downloader.postprocess import postprocess
 from datetime import datetime, timedelta
 import json
 from uuid import uuid4
-
+from ecmwf_downloader.postprocess import get_save_dir
 # Initialize logger
 logger = setup_logger(__name__)
 
@@ -65,6 +65,19 @@ def check_exists(date: str, config) -> bool:
 
     return False
 
+def check_exists_by_file_names(date: str, config) -> bool:
+    
+    save_dir = get_save_dir(config)
+    for data_type in config['type']:
+        file_name = f'{data_type}_{ensure_date_format(date, config)}.nc'
+        file_path = save_dir / file_name
+        
+
+        
+        if not file_path.exists():
+            return False
+
+    return True
 
 def get_raw_data(config: Dict[str, str]) -> None:
     """
@@ -111,7 +124,7 @@ def get_data(config: Dict[str, str]) -> None:
         date = h.adjust_date(initial_date, offset)
         config['date'] = date
 
-        if not check_exists(date, config):
+        if not check_exists_by_file_names(date, config):
             logger.info(f"Downloading and processing data for {date}")
             get_raw_data(config)
             postprocess(config)
