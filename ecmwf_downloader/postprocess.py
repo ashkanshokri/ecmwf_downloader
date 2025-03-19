@@ -92,6 +92,17 @@ def convert_and_crop_grib_to_netcdf(
             if not isinstance(date, str):
                 date = date[0]
             out_filename = f'{data_type}_{date}.nc'
+            
+            # If the data contains NaNs, skip saving    
+            if config.get('do_not_save_if_faulty', True):
+                skip_saving = False
+                for param in config['param']:
+                    if ds[param].isnull().sum().values > 0:
+                        logger.info(f"Skipping saving {out_filename} because it contains NaNs")
+                        skip_saving = True
+                        break
+                if skip_saving:
+                    continue
 
             ds.to_netcdf(save_dir / out_filename,
                          encoding=encoding,
