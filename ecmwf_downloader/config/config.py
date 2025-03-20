@@ -46,6 +46,8 @@ class Config:
             'area': [-5.0, 110.0, -45.0, 155.0],
             'save_grib': False,
             'save_netcdf': True,
+            'do_not_save_if_faulty': True,
+            'show_progress': True,
         }
         default_config: Dict[str, Any] = DEFAULT_DICT
         default_config.update(kwargs)

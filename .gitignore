@@ -166,3 +166,6 @@ cornjob_concurent.yaml
 
 **.grib
 **.idx
+
+workflows/nbs/data
+
