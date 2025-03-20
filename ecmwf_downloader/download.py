@@ -96,7 +96,7 @@ def get_raw_data(config: Dict[str, str]) -> None:
     for source in config['source']:
         try:
             client = Client(source=source)
-            client.retrieve(config.request, temp_filename)
+            client.retrieve(config.request, temp_filename, progress=False)
             logger.info(
                 f"Successfully retrieved data for {config['date']} and {config['param']}. saved to {temp_filename}"
             )
