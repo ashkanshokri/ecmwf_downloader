@@ -104,7 +104,7 @@ def get_raw_data(config: Dict[str, str]) -> None:
 
         except Exception:
             logger.error(
-                f"Failed to retrieve data for {config['date']} and {config['param']} from {source}."
+                f"Failed to retrieve {config['param']} data for {ensure_date_format(config['date'], config)} from {source}."
             )
 
 
@@ -125,6 +125,6 @@ def get_data(config: Dict[str, str]) -> None:
         config['date'] = date
 
         if not check_exists_by_file_names(date, config):
-            logger.info(f"Downloading and processing data for {date}")
+            logger.info(f"Downloading and processing {config['param']} data for {ensure_date_format(date, config)} from {config['source']}")
             get_raw_data(config)
             postprocess(config)
