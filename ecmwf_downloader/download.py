@@ -95,10 +95,11 @@ def get_raw_data(config: Dict[str, str]) -> None:
 
     for source in config['source']:
         try:
+            logger.info(f"Downloading and processing {config['param']} data for {ensure_date_format(config['date'], config)}")
             client = Client(source=source)
             client.retrieve(config.request, temp_filename, progress=False)
             logger.info(
-                f"Successfully retrieved data for {config['date']} and {config['param']}. saved to {temp_filename}"
+                f"Successfully retrieved {config['param']} data for {ensure_date_format(config['date'], config)}. saved to {temp_filename}"
             )
             break
 
@@ -124,7 +125,6 @@ def get_data(config: Dict[str, str]) -> None:
         date = h.adjust_date(initial_date, offset)
         config['date'] = date
 
-        if not check_exists_by_file_names(date, config):
-            logger.info(f"Downloading and processing {config['param']} data for {ensure_date_format(date, config)} from {config['source']}")
+        if not check_exists_by_file_names(date, config):            
             get_raw_data(config)
             postprocess(config)
