@@ -95,7 +95,7 @@ def get_raw_data(config: Dict[str, str]) -> None:
 
     for source in config['source']:
         try:
-            logger.info(f"Downloading and processing {config['param']} data for {ensure_date_format(config['date'], config)}")
+            logger.info(f"Downloading and processing {config['param']} data for {ensure_date_format(config['date'], config)} from {source}")
             client = Client(source=source)
             client.retrieve(config.request, temp_filename, progress=False)
             logger.info(
