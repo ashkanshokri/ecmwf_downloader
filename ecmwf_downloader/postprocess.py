@@ -94,13 +94,13 @@ def convert_and_crop_grib_to_netcdf(
             out_filename = f'{data_type}_{date}.nc'
             
             # If the data contains NaNs, skip saving    
-            if config['if_invalid'] == 'skip':
-                is_invalid = False
-                for param in config['param']:
-                    if ds[param].isnull().sum().values > 0:
-                        logger.info(f"Skipping saving {out_filename} because it contains NaNs")
-                        is_faulty = True
-                        break
+
+            is_invalid = False
+            for param in config['param']:
+                if ds[param].isnull().sum().values > 0:
+                    logger.info(f"Skipping saving {out_filename} because it contains NaNs")
+                    is_invalid = True
+                    break
 
             if not is_invalid:
                 ds.to_netcdf(save_dir / out_filename,
@@ -123,8 +123,8 @@ def convert_and_crop_grib_to_netcdf(
         except Exception as e:
             logger.exception(
                 f"Failed to save NetCDF for {data_type} on {date}: {e}")
-            ds.to_netcdf(save_dir / out_filename, engine='scipy')
-            logger.info(f"Saving NetCDF using scipy: {out_filename}")
+            ds.to_netcdf(save_dir / out_filename, engine='netcdf4')
+            logger.info(f"Saving NetCDF using netcdf4: {out_filename}")
 
     return date
 
