@@ -94,20 +94,32 @@ def convert_and_crop_grib_to_netcdf(
             out_filename = f'{data_type}_{date}.nc'
             
             # If the data contains NaNs, skip saving    
-            if config.get('do_not_save_if_faulty', True):
-                skip_saving = False
+            if config['if_invalid'] == 'skip':
+                is_invalid = False
                 for param in config['param']:
                     if ds[param].isnull().sum().values > 0:
                         logger.info(f"Skipping saving {out_filename} because it contains NaNs")
-                        skip_saving = True
+                        is_faulty = True
                         break
-                if skip_saving:
-                    continue
 
-            ds.to_netcdf(save_dir / out_filename,
-                         encoding=encoding,
-                         engine='netcdf4')
-            logger.info(f"Saving NetCDF using netcdf4: {out_filename}")
+            if not is_invalid:
+                ds.to_netcdf(save_dir / out_filename,
+                            encoding=encoding,
+                            engine='netcdf4')
+                logger.info(f"Saving NetCDF using netcdf4: {out_filename}")
+            else:
+                if config['if_invalid'] == 'save_separate':
+                    save_dir_invalid = save_dir / 'invalid'
+                    save_dir_invalid.mkdir(exist_ok=True, parents=True)
+                    ds.to_netcdf(save_dir_invalid / out_filename, engine='netcdf4')
+                    logger.warning(f"The file contains NaNs. Saving NetCDF: {out_filename}")
+                elif config['if_invalid'] == 'save':
+                    ds.to_netcdf(save_dir / out_filename, engine='netcdf4')
+                    logger.warning(f"The file contains NaNs. Saving NetCDF: {out_filename}")
+                else:
+                    logger.info(f"Skipping saving {out_filename} because it contains NaNs")
+
+
         except Exception as e:
             logger.exception(
                 f"Failed to save NetCDF for {data_type} on {date}: {e}")
